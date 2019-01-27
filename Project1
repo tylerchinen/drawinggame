@@ -1,0 +1,96 @@
+// Needed to access colors in Java
+import java.awt.Color;
+
+public class Project1 {
+
+	// Set variable type Color as LineColor
+	static Color lineColor;
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+		// Initializing window size
+		EZ.initialize(700, 500);
+
+		// Creating buttons and text for new line
+		EZRectangle red = EZ.addRectangle(300, 50, 50, 50, Color.red, true);
+		EZRectangle green = EZ.addRectangle(375, 50, 50, 50, Color.green, true);
+		EZRectangle blue = EZ.addRectangle(450, 50, 50, 50, Color.blue, true);
+		EZRectangle NewLine = EZ.addRectangle(100, 50, 100, 50, Color.lightGray, true);
+		EZ.addText(100, 50, "New Line", Color.MAGENTA, 18);
+
+		// Set initial line color to black
+		lineColor = Color.BLACK;
+
+		// Add sounds
+		EZSound sound1 = EZ.addSound("blurb.wav");
+		EZSound sound2 = EZ.addSound("bubblewrap.wav");
+		EZSound sound3 = EZ.addSound("dude.wav");
+		EZSound sound4 = EZ.addSound("zipping.wav");
+
+		// Declare variables as type int and initialize
+		int prevX = 100;
+		int prevY = 100;
+
+		int ClickX = 0;
+		int ClickY = 0;
+
+		// Declare variable type Boolean called firstClick and set to true
+		boolean firstClick = true;
+
+		// Begin while loop "forever" since the parameter is set to true
+		while (true) {
+
+			// Get mouse's X and Y positions
+			ClickX = EZInteraction.getXMouse();
+			ClickY = EZInteraction.getYMouse();
+
+			if (EZInteraction.wasMouseLeftButtonReleased()) {
+
+				// If ClickX and ClickY are on red square play sound1
+				if (red.isPointInElement(ClickX, ClickY)) {
+					sound1.play();
+					// Change line color to red
+					lineColor = new Color(255, 0, 0);
+				}
+
+				// If ClickX and ClickY are on green square play sound2
+				else if (green.isPointInElement(ClickX, ClickY)) {
+					sound2.play();
+					// Change line color to green
+					lineColor = new Color(0, 255, 0);
+				}
+
+				// If ClickX and ClickY are on blue square play sound3
+				else if (blue.isPointInElement(ClickX, ClickY)) {
+					sound3.play();
+					// Change line color to blue
+					lineColor = new Color(0, 0, 255);
+				}
+
+				// If ClickX and ClickY are on NewLine button play Sound4
+				else if (NewLine.isPointInElement(ClickX, ClickY)) {
+					sound4.play();
+
+					// FirstClick is set to true
+					firstClick = true;
+
+				} else {
+					// If it is not the first click then draw a line
+					if (!firstClick) {
+						EZ.addLine(prevX, prevY, ClickX, ClickY, lineColor, 3);
+
+					} else {
+						// First click is set to false
+						firstClick = false;
+					}
+
+					// Makes consecutive lines by updating the variables
+					prevX = ClickX;
+					prevY = ClickY;
+				}
+			}
+			EZ.refreshScreen();
+		}
+	}
+}
